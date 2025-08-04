@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🔒 Hacked By Kyy</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: monospace;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      background-color: black;
+      overflow: hidden;
+    }
+
+    #startScreen, #formScreen, #errorSpam {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    #startScreen {
+      background: url("https://img1.pixhost.to/images/7692/628445728_imgtmp.jpg") no-repeat center center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #startScreen h1 {
+      color: red;
+      font-size: 24px;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 10px 20px;
+      border-radius: 10px;
+    }
+
+    #videoScreen video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    #formScreen {
+      background: url("https://img1.pixhost.to/images/7692/628443326_imgtmp.jpg") no-repeat center center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    #formScreen input {
+      padding: 12px;
+      font-size: 18px;
+      margin-top: 20px;
+      border: none;
+      outline: none;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    #formScreen button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: red;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    #errorSpam {
+      display: none;
+      flex-wrap: wrap;
+      padding: 10px;
+      color: red;
+      background-color: black;
+      overflow-y: scroll;
+      font-size: 14px;
+    }
+
+    .spamText {
+      width: 100%;
+      margin-bottom: 5px;
+    }
+
+    audio {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="startScreen">
+    <h1>Tunggu Sebentar Untuk Memulai Web</h1>
+  </div>
+
+  <div id="videoScreen" style="display: none;">
+    <video id="introVideo" src="https://files.catbox.moe/qnacys.mp4" autoplay muted></video>
+  </div>
+
+  <div id="formScreen" style="display: none;">
+    <h2 style="color: red; text-align: center; font-size: 24px;">🔐 HP Anda Telah Dikunci!</h2>
+    <input id="passInput" type="password" placeholder="Masukkan Password"/>
+    <button onclick="checkPass()">Buka Kunci</button>
+  </div>
+
+  <div id="errorSpam"></div>
+
+  <!-- Backsound utama -->
+  <audio id="mainSound" autoplay loop>
+    <source src="https://files.catbox.moe/ucwwml.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Suara error (khusus spam) -->
+  <audio id="errorSound" loop>
+    <source src="https://files.catbox.moe/ayev1p.mpeg" type="audio/mpeg" />
+  </audio>
+
+  <script>
+    const startScreen = document.getElementById("startScreen");
+    const videoScreen = document.getElementById("videoScreen");
+    const formScreen = document.getElementById("formScreen");
+    const errorSpam = document.getElementById("errorSpam");
+    const introVideo = document.getElementById("introVideo");
+    const errorSound = document.getElementById("errorSound");
+    const mainSound = document.getElementById("mainSound");
+    let spamInterval;
+
+    window.addEventListener("load", () => {
+      mainSound.play().catch(e => console.warn("Main audio autoplay error:", e));
+    });
+
+    // Step 1: Tampilkan background selama 4 detik
+    setTimeout(() => {
+      startScreen.style.display = "none";
+      videoScreen.style.display = "block";
+      introVideo.play();
+
+      // Step 2: Tampilkan video 2 detik
+      setTimeout(() => {
+        videoScreen.style.display = "none";
+        formScreen.style.display = "flex";
+
+        mainSound.play().catch(() => {});
+        errorSound.play().catch(() => {});
+      }, 2000);
+    }, 4000); // background delay diperpanjang
+
+    // Step 3: Cek password
+    function checkPass() {
+      const input = document.getElementById("passInput").value.trim().toLowerCase();
+
+      if (input === "noroshi") {
+        clearInterval(spamInterval);
+        errorSound.pause();
+        errorSound.currentTime = 0;
+        alert("✅ HP berhasil dibuka!");
+        errorSpam.style.display = "none";
+        location.reload();
+      } else {
+        formScreen.style.display = "none";
+        errorSpam.style.display = "flex";
+        errorSpam.innerHTML = "";
+
+        spamInterval = setInterval(() => {
+          const span = document.createElement("div");
+          span.className = "spamText";
+          span.innerText = "⚠️ 404: Masukkan Kata Sandi Noroshi Untuk Menghentikan Spam!";
+          errorSpam.appendChild(span);
+
+          if (errorSpam.childNodes.length > 500) {
+            errorSpam.innerHTML = "";
+          }
+        }, 100);
+      }
+    }
+  </script>
+</body>
+</html>
